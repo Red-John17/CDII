@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV to JSON Converter</title>
+</head>
+<body>
+    <h1>Upload CSV File</h1>
+    <form id="uploadForm" action="/upload_csv" method="post" enctype="multipart/form-data">
+        <input type="file" name="csv_file" accept=".csv">
+        <input type="button" value="Upload CSV" onclick="uploadCSV()">
+    </form>
+    <h1>Convert and Download JSON</h1>
+    <form id="convertForm" action="/convert_and_download" method="get">
+        <input type="text" id="fname" name="fname" placeholder="Enter CSV file name">
+        <input type="text" id="type" name="type" placeholder="Enter graph type (optional)">
+        <input type="button" value="Convert and Download JSON" onclick="convertAndDownload()">
+    </form>
+
+    <script>
+        function uploadCSV() {
+            var form = document.getElementById('uploadForm');
+            var formData = new FormData(form);
+            fetch('/upload_csv', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('CSV file uploaded successfully');
+                } else {
+                    alert('Failed to upload CSV file');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function convertAndDownload() {
+            var fname = document.getElementById('fname').value;
+            var type = document.getElementById('type').value;
+            var url = `/convert_and_download?fname=${fname}&type=${type}`;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
